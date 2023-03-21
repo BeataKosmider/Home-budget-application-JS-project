@@ -37,13 +37,14 @@ const addIncomeItem = () => {
   };
   incomesArr.push(newItem);
   showIncomes();
+  sumIncomes();
 };
 incomeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   addIncomeItem();
 });
 
-const createItem = (item) => {
+const createItemIn = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
   listItem.classList = "flex flex--space-between budget__list__item";
@@ -66,8 +67,22 @@ const createItem = (item) => {
 const showIncomes = () => {
   incomesList.innerHTML = "";
   incomesArr.forEach((item) => {
-    createItem(item);
+    createItemIn(item);
   });
+  console.log(incomesArr);
+};
+
+const sumIncomes = () => {
+  const sum = incomesArr.reduce((acc, newValue) => {
+    return acc + newValue.amount;
+  }, 0);
+  document.getElementById("incomesValue").innerText = sum;
+};
+const sumExpenses = () => {
+  const sum = expensesArr.reduce((acc, newValue) => {
+    return acc + newValue.amount;
+  }, 0);
+  document.getElementById("expensesValue").innerText = sum;
 };
 
 const addExpenseItem = () => {
@@ -77,6 +92,7 @@ const addExpenseItem = () => {
   };
   expensesArr.push(newItemEx);
   showExpenses();
+  sumExpenses();
 };
 expenseForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -101,6 +117,10 @@ const createItemEx = (item) => {
   listItem.appendChild(amount);
   listItem.appendChild(editButton);
   listItem.appendChild(removeButton);
+
+  removeButton.addEventListener("click", () => {
+    removeItem();
+  });
 };
 const showExpenses = () => {
   expensesList.innerHTML = "";
@@ -109,10 +129,10 @@ const showExpenses = () => {
   });
 };
 
-//stworzyć funkcje do edytuj/usuń button
+/*stworzyć funkcje do edytuj/usuń button
 editButton.addEventListener("click", () => {
-  editItem(listItem, itemTitle, amount);
+  editItem(itemTitle, amount);
 });
 removeButton.addEventListener("click", () => {
   removeItem();
-});
+});*/
