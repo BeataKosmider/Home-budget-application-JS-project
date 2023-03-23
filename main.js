@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+
 const incomeForm = document.getElementById("incomeForm");
 const incomeTitle = document.getElementById("incomeTitle");
 const incomeValue = document.getElementById("incomeValue");
@@ -10,39 +12,34 @@ const expenseValue = document.getElementById("expenseValue");
 const expensesList = document.getElementById("expensesList");
 const expensesValue = document.getElementById("expensesValue");
 
-//stworzyć warunki dla wyświetlania właściwego komunikatu i pole kwoty
-const budgetParagraphPlus = document.createElement("p");
-budgetParagraphPlus.innerHTML = "Możesz jeszcze wydać złotych";
-budgetParagraphPlus.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphPlus);
-
-const budgetParagraphZero = document.createElement("p");
-budgetParagraphZero.innerHTML = "Bilans wynosi zero";
-budgetParagraphZero.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphZero);
-
-const budgetParagraphMinus = document.createElement("p");
-budgetParagraphMinus.innerHTML =
-  "Bilans jest ujemny. Jesteś na minusie złotych";
-budgetParagraphMinus.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphMinus);
+const budgetState = document.getElementById("budgetState");
 
 const incomesArr = [];
 const expensesArr = [];
 
 const addIncomeItem = () => {
-  const newItem = {
+  const newItemIn = {
+    id: uuidv4(),
     title: incomeTitle.value,
     amount: Number(incomeValue.value),
   };
-  incomesArr.push(newItem);
+  incomesArr.push(newItemIn);
   showIncomes();
   sumIncomes();
+  balance();
+
+  incomeTitle.value = "";
+  incomeValue.value = "";
 };
 incomeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   addIncomeItem();
 });
+
+const removeItemIn = (event, id) => {
+  incomesArr = incomesArr.filter((item) => item.id !== id);
+  showIncomes();
+};
 
 const createItemIn = (item) => {
   const listItem = document.createElement("li");
@@ -62,6 +59,8 @@ const createItemIn = (item) => {
   listItem.appendChild(amount);
   listItem.appendChild(editButton);
   listItem.appendChild(removeButton);
+
+  removeButton.addEventListener("click", (e) => removeItemIn(e, id));
 };
 
 const showIncomes = () => {
@@ -73,26 +72,31 @@ const showIncomes = () => {
 };
 
 const sumIncomes = () => {
-  const sum = incomesArr.reduce((acc, newValue) => {
+  const totalIncomes = incomesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
-  document.getElementById("incomesValue").innerText = sum;
+  document.getElementById("incomesValue").innerText = totalIncomes;
 };
 const sumExpenses = () => {
-  const sum = expensesArr.reduce((acc, newValue) => {
+  const totalExpenses = expensesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
-  document.getElementById("expensesValue").innerText = sum;
+  document.getElementById("expensesValue").innerText = totalExpenses;
 };
 
 const addExpenseItem = () => {
   const newItemEx = {
+    id: uuidv4(),
     title: expenseTitle.value,
     amount: Number(expenseValue.value),
   };
   expensesArr.push(newItemEx);
   showExpenses();
   sumExpenses();
+  balance();
+
+  expenseTitle.value = "";
+  expenseValue.value = "";
 };
 expenseForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -119,7 +123,7 @@ const createItemEx = (item) => {
   listItem.appendChild(removeButton);
 
   removeButton.addEventListener("click", () => {
-    removeItem();
+    removeItemEx();
   });
 };
 const showExpenses = () => {
@@ -127,12 +131,45 @@ const showExpenses = () => {
   expensesArr.forEach((item) => {
     createItemEx(item);
   });
+  console.log(expensesArr);
 };
 
-/*stworzyć funkcje do edytuj/usuń button
+let totalIncomes = 0;
+let totalExpenses = 0;
+let sumBalance = 0;
+
+const balance = () => {
+  const sumBalance = totalIncomes - totalExpenses;
+  console.log(sumBalance);
+  if (sumBalance > 0) {
+    budgetState.innerHTML = "Możesz jeszcze wydać ${sumBalance} złotych.";
+  } else if (sumBalance < 0) {
+    budgetState.innerHTML =
+      "Bilans jest ujemny. Jesteś na minusie ${sumBalance} złotych.";
+  } else {
+    budgetState.innerHTML = "Bilans wynosi zero.";
+  }
+};
+
+/*to do list:
+edit function
 editButton.addEventListener("click", () => {
   editItem(itemTitle, amount);
 });
-removeButton.addEventListener("click", () => {
-  removeItem();
-});*/
+
+/*out of code:
+const budgetParagraphPlus = document.createElement("p");
+budgetParagraphPlus.innerHTML = "Możesz jeszcze wydać złotych";
+budgetParagraphPlus.classList = "text--center";
+document.getElementById("budgetState").appendChild(budgetParagraphPlus);
+
+const budgetParagraphZero = document.createElement("p");
+budgetParagraphZero.innerHTML = "Bilans wynosi zero";
+budgetParagraphZero.classList = "text--center";
+document.getElementById("budgetState").appendChild(budgetParagraphZero);
+
+const budgetParagraphMinus = document.createElement("p");
+budgetParagraphMinus.innerHTML =
+  "Bilans jest ujemny. Jesteś na minusie złotych";
+budgetParagraphMinus.classList = "text--center";
+document.getElementById("budgetState").appendChild(budgetParagraphMinus);*/
