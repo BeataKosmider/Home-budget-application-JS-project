@@ -36,6 +36,7 @@ incomeForm.addEventListener("submit", (event) => {
   addIncomeItem();
 });
 
+//nie działa
 const removeItemIn = (event, id) => {
   incomesArr = incomesArr.filter((item) => item.id !== id);
   showIncomes();
@@ -122,9 +123,9 @@ const createItemEx = (item) => {
   listItem.appendChild(editButton);
   listItem.appendChild(removeButton);
 
-  removeButton.addEventListener("click", () => {
+  /* removeButton.addEventListener("click", () => {
     removeItemEx();
-  });
+  });*/
 };
 const showExpenses = () => {
   expensesList.innerHTML = "";
@@ -138,6 +139,7 @@ let totalIncomes = 0;
 let totalExpenses = 0;
 let sumBalance = 0;
 
+//nie działa
 const balance = () => {
   const sumBalance = totalIncomes - totalExpenses;
   console.log(sumBalance);
