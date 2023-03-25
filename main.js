@@ -14,8 +14,8 @@ const expensesValue = document.getElementById("expensesValue");
 
 const budgetState = document.getElementById("budgetState");
 
-const incomesArr = [];
-const expensesArr = [];
+let incomesArr = [];
+let expensesArr = [];
 
 const addIncomeItem = () => {
   const newItemIn = {
@@ -36,22 +36,30 @@ incomeForm.addEventListener("submit", (event) => {
   addIncomeItem();
 });
 
-//nie działa
-const removeItemIn = (event, id) => {
+const removeItemIn = (id) => {
   incomesArr = incomesArr.filter((item) => item.id !== id);
   showIncomes();
+  sumIncomes();
+  balance();
 };
+/*const editItem = (item) => {
+document.querySelector(`#${item.id}`);
+//li.querySelector(“.title”)
+}*/
 
 const createItemIn = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
-  listItem.classList = "flex flex--space-between budget__list__item";
+  listItem.className = "flex flex--space-between budget__list__item";
   const itemTitle = document.createElement("p");
+  itemTitle.className = "title";
   itemTitle.innerText = item.title;
   const amount = document.createElement("p");
   amount.innerText = item.amount;
+  amount.className = "amount";
   const editButton = document.createElement("button");
   editButton.innerText = "Edytuj";
+  editButton.className = "edit";
   const removeButton = document.createElement("button");
   removeButton.innerText = "Usuń";
 
@@ -61,7 +69,10 @@ const createItemIn = (item) => {
   listItem.appendChild(editButton);
   listItem.appendChild(removeButton);
 
-  removeButton.addEventListener("click", (e) => removeItemIn(e, id));
+  removeButton.addEventListener("click", () => removeItemIn(item.id));
+  editButton.addEventListener("click", () => {
+    editItem(item);
+  });
 };
 
 const showIncomes = () => {
@@ -73,13 +84,13 @@ const showIncomes = () => {
 };
 
 const sumIncomes = () => {
-  const totalIncomes = incomesArr.reduce((acc, newValue) => {
+  totalIncomes = incomesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
   document.getElementById("incomesValue").innerText = totalIncomes;
 };
 const sumExpenses = () => {
-  const totalExpenses = expensesArr.reduce((acc, newValue) => {
+  totalExpenses = expensesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
   document.getElementById("expensesValue").innerText = totalExpenses;
@@ -104,6 +115,13 @@ expenseForm.addEventListener("submit", (event) => {
   addExpenseItem();
 });
 
+const removeItemEx = (id) => {
+  expensesArr = expensesArr.filter((item) => item.id !== id);
+  showExpenses();
+  sumExpenses();
+  balance();
+};
+
 const createItemEx = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
@@ -123,10 +141,9 @@ const createItemEx = (item) => {
   listItem.appendChild(editButton);
   listItem.appendChild(removeButton);
 
-  /* removeButton.addEventListener("click", () => {
-    removeItemEx();
-  });*/
+  removeButton.addEventListener("click", () => removeItemEx(item.id));
 };
+
 const showExpenses = () => {
   expensesList.innerHTML = "";
   expensesArr.forEach((item) => {
@@ -139,15 +156,15 @@ let totalIncomes = 0;
 let totalExpenses = 0;
 let sumBalance = 0;
 
-//nie działa
 const balance = () => {
-  const sumBalance = totalIncomes - totalExpenses;
+  sumBalance = totalIncomes - totalExpenses;
   console.log(sumBalance);
+  console.log(totalIncomes);
+  console.log(totalExpenses);
   if (sumBalance > 0) {
-    budgetState.innerHTML = "Możesz jeszcze wydać ${sumBalance} złotych.";
+    budgetState.innerHTML = `Możesz jeszcze wydać ${sumBalance} złotych.`;
   } else if (sumBalance < 0) {
-    budgetState.innerHTML =
-      "Bilans jest ujemny. Jesteś na minusie ${sumBalance} złotych.";
+    budgetState.innerHTML = `Bilans jest ujemny. Jesteś na minusie ${sumBalance} złotych.`;
   } else {
     budgetState.innerHTML = "Bilans wynosi zero.";
   }
