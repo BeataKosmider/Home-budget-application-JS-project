@@ -42,10 +42,47 @@ const removeItemIn = (id) => {
   sumIncomes();
   balance();
 };
-/*const editItem = (item) => {
-document.querySelector(`#${item.id}`);
-//li.querySelector(“.title”)
-}*/
+
+//nowa funkcja
+const editItem = (item) => {
+  const li = document.querySelector(`#${item.id}`);
+  const title = li.querySelector(".title");
+  const amount = li.querySelector(".amount");
+  const editBtn = li.querySelector(".edit");
+  const editTitle = document.createElement("input");
+  editTitle.setAttribute("type", "text");
+  editTitle.className = "edit-title";
+  const editAmount = document.createElement("input");
+  editAmount.setAttribute("type", "number");
+  editAmount.className = "edit-amount";
+  const saveButton = document.createElement("button");
+  saveButton.innerText = "Zapisz";
+  saveButton.className = "save";
+
+  title.replaceWith(editTitle);
+  amount.replaceWith(editAmount);
+  editBtn.replaceWith(saveButton);
+
+  saveButton.addEventListener("click", () => saveItem(item));
+};
+
+const saveItem = (item) => {
+  const li = document.querySelector(`#${item.id}`);
+  const title = li.querySelector(".title");
+  const amount = li.querySelector(".amount");
+  const editBtn = li.querySelector(".edit");
+  const editedTitle = li.querySelector(".edit-title");
+  const editedAmount = li.querySelector(".edit-amount");
+  const saveButtonClicked = li.querySelector(".save");
+
+  editedTitle.replaceWith(title);
+  editedAmount.replaceWith(amount);
+  saveButtonClicked.replaceWith(editBtn);
+
+  showIncomes();
+  sumIncomes();
+  balance();
+};
 
 const createItemIn = (item) => {
   const listItem = document.createElement("li");
@@ -70,9 +107,7 @@ const createItemIn = (item) => {
   listItem.appendChild(removeButton);
 
   removeButton.addEventListener("click", () => removeItemIn(item.id));
-  editButton.addEventListener("click", () => {
-    editItem(item);
-  });
+  editButton.addEventListener("click", () => editItem(item));
 };
 
 const showIncomes = () => {
@@ -125,11 +160,13 @@ const removeItemEx = (id) => {
 const createItemEx = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
-  listItem.classList = "flex flex--space-between budget__list__item";
+  listItem.className = "flex flex--space-between budget__list__item";
   const itemTitle = document.createElement("p");
+  itemTitle.className = "title";
   itemTitle.innerText = item.title;
   const amount = document.createElement("p");
   amount.innerText = item.amount;
+  amount.className = "amount";
   const editButton = document.createElement("button");
   editButton.innerText = "Edytuj";
   const removeButton = document.createElement("button");
@@ -142,6 +179,7 @@ const createItemEx = (item) => {
   listItem.appendChild(removeButton);
 
   removeButton.addEventListener("click", () => removeItemEx(item.id));
+  editButton.addEventListener("click", () => editItem(item));
 };
 
 const showExpenses = () => {
@@ -169,26 +207,3 @@ const balance = () => {
     budgetState.innerHTML = "Bilans wynosi zero.";
   }
 };
-
-/*to do list:
-edit function
-editButton.addEventListener("click", () => {
-  editItem(itemTitle, amount);
-});
-
-/*out of code:
-const budgetParagraphPlus = document.createElement("p");
-budgetParagraphPlus.innerHTML = "Możesz jeszcze wydać złotych";
-budgetParagraphPlus.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphPlus);
-
-const budgetParagraphZero = document.createElement("p");
-budgetParagraphZero.innerHTML = "Bilans wynosi zero";
-budgetParagraphZero.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphZero);
-
-const budgetParagraphMinus = document.createElement("p");
-budgetParagraphMinus.innerHTML =
-  "Bilans jest ujemny. Jesteś na minusie złotych";
-budgetParagraphMinus.classList = "text--center";
-document.getElementById("budgetState").appendChild(budgetParagraphMinus);*/
