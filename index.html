@@ -24,11 +24,7 @@
         <div
           id="budgetState"
           class="text--center budget__state budget__state--success"
-        >
-          <!--<p class="text--center">
-            Możesz jeszcze wydać <span id="budgetValue">XXX</span> złotych
-          </p>--->
-        </div>
+        ></div>
       </header>
       <section class="flex flex--space-between budget__list__wrapper">
         <div class="budget__incomes">
@@ -43,6 +39,9 @@
               type="number"
               id="incomeValue"
               class="budget__list__form__input budget__list__form__input--number"
+              min="0.01"
+              step="0.01"
+              placeholder="0.00"
             />
             <input
               type="submit"
@@ -50,23 +49,7 @@
               class="budget__list__form__input__button"
             />
           </form>
-          <ul id="incomesList" class="budget__list">
-            <!-- A SAMPLE BUDGET LIST INCOME ITEM
-                    <li class="flex flex--space-between budget__list__item">
-                        <p>Text input value <span>number input value</span> PLN</p>
-                        <div class="budget__list__item__buttons__wrapper">
-                            <button class="budget__list__item__button budget__list__item__button--edit">Edytuj</button>
-                            <button class="budget__list__item__button budget__list__item__button--delete">Usuń</button>
-                        </div>
-                    </li>
-                    <li class="flex flex--space-between budget__list__item">
-                        <p>Text input value <span>number input value</span> PLN</p>
-                        <div class="budget__list__item__buttons__wrapper">
-                            <button class="budget__list__item__button budget__list__item__button--edit">Edytuj</button>
-                            <button class="budget__list__item__button budget__list__item__button--delete">Usuń</button>
-                        </div>
-                    </li> -->
-          </ul>
+          <ul id="incomesList" class="budget__list"></ul>
           <p class="budget__list__summary">
             Suma przychodów: <span id="incomesValue"></span> zł
           </p>
@@ -83,6 +66,9 @@
               type="number"
               id="expenseValue"
               class="budget__list__form__input budget__list__form__input--number"
+              min="0.01"
+              step="0.01"
+              placeholder="0.00"
             />
             <input
               type="submit"
@@ -90,23 +76,7 @@
               class="budget__list__form__input__button"
             />
           </form>
-          <ul id="expensesList" class="budget__list">
-            <!-- A SAMPLE BUDGET LIST EXPENSE ITEM
-                    <li class="flex flex--space-between budget__list__item">
-                        <p>Text input value <span>number input value</span> PLN</p>
-                        <div class="budget__list__item__buttons__wrapper">
-                            <button class="budget__list__item__button budget__list__item__button--edit">Edytuj</button>
-                            <button class="budget__list__item__button budget__list__item__button--delete">Usuń</button>
-                        </div>
-                    </li>
-                    <li class="flex flex--space-between budget__list__item">
-                        <p>Text input value <span>number input value</span> PLN</p>
-                        <div class="budget__list__item__buttons__wrapper">
-                            <button class="budget__list__item__button budget__list__item__button--edit">Edytuj</button>
-                            <button class="budget__list__item__button budget__list__item__button--delete">Usuń</button>
-                        </div>
-                    </li> -->
-          </ul>
+          <ul id="expensesList" class="budget__list"></ul>
           <p class="budget__list__summary">
             Suma wydatków: <span id="expensesValue"></span> zł
           </p>

@@ -43,18 +43,19 @@ const removeItemIn = (id) => {
   balance();
 };
 
-//nowa funkcja
-const editItem = (item) => {
-  const li = document.querySelector(`#${item.id}`);
+const editItemIn = (item) => {
+  const li = document.getElementById(item.id);
   const title = li.querySelector(".title");
   const amount = li.querySelector(".amount");
   const editBtn = li.querySelector(".edit");
   const editTitle = document.createElement("input");
   editTitle.setAttribute("type", "text");
   editTitle.className = "edit-title";
+  editTitle.value = item.title;
   const editAmount = document.createElement("input");
   editAmount.setAttribute("type", "number");
   editAmount.className = "edit-amount";
+  editAmount.value = item.amount;
   const saveButton = document.createElement("button");
   saveButton.innerText = "Zapisz";
   saveButton.className = "save";
@@ -63,11 +64,11 @@ const editItem = (item) => {
   amount.replaceWith(editAmount);
   editBtn.replaceWith(saveButton);
 
-  saveButton.addEventListener("click", () => saveItem(item));
+  saveButton.addEventListener("click", () => saveItemIn(item));
 };
 
-const saveItem = (item) => {
-  const li = document.querySelector(`#${item.id}`);
+const saveItemIn = (item) => {
+  const li = document.getElementById(item.id);
   const title = li.querySelector(".title");
   const amount = li.querySelector(".amount");
   const editBtn = li.querySelector(".edit");
@@ -75,6 +76,17 @@ const saveItem = (item) => {
   const editedAmount = li.querySelector(".edit-amount");
   const saveButtonClicked = li.querySelector(".save");
 
+  incomesArr = incomesArr.map((income) => {
+    if (income.id === item.id) {
+      return {
+        id: item.id,
+        title: editedTitle.value,
+        amount: Number(editedAmount.value),
+      };
+    } else {
+      return income;
+    }
+  });
   editedTitle.replaceWith(title);
   editedAmount.replaceWith(amount);
   saveButtonClicked.replaceWith(editBtn);
@@ -107,7 +119,7 @@ const createItemIn = (item) => {
   listItem.appendChild(removeButton);
 
   removeButton.addEventListener("click", () => removeItemIn(item.id));
-  editButton.addEventListener("click", () => editItem(item));
+  editButton.addEventListener("click", () => editItemIn(item));
 };
 
 const showIncomes = () => {
@@ -157,6 +169,59 @@ const removeItemEx = (id) => {
   balance();
 };
 
+const editItemEx = (item) => {
+  const li = document.getElementById(item.id);
+  const title = li.querySelector(".title");
+  const amount = li.querySelector(".amount");
+  const editBtn = li.querySelector(".edit");
+  const editTitle = document.createElement("input");
+  editTitle.setAttribute("type", "text");
+  editTitle.className = "edit-title";
+  editTitle.value = item.title;
+  const editAmount = document.createElement("input");
+  editAmount.setAttribute("type", "number");
+  editAmount.className = "edit-amount";
+  editAmount.value = item.amount;
+  const saveButton = document.createElement("button");
+  saveButton.innerText = "Zapisz";
+  saveButton.className = "save";
+
+  title.replaceWith(editTitle);
+  amount.replaceWith(editAmount);
+  editBtn.replaceWith(saveButton);
+
+  saveButton.addEventListener("click", () => saveItemEx(item));
+};
+
+const saveItemEx = (item) => {
+  const li = document.getElementById(item.id);
+  const title = li.querySelector(".title");
+  const amount = li.querySelector(".amount");
+  const editBtn = li.querySelector(".edit");
+  const editedTitle = li.querySelector(".edit-title");
+  const editedAmount = li.querySelector(".edit-amount");
+  const saveButtonClicked = li.querySelector(".save");
+
+  expensesArr = expensesArr.map((expense) => {
+    if (expense.id === item.id) {
+      return {
+        id: item.id,
+        title: editedTitle.value,
+        amount: Number(editedAmount.value),
+      };
+    } else {
+      return expense;
+    }
+  });
+  editedTitle.replaceWith(title);
+  editedAmount.replaceWith(amount);
+  saveButtonClicked.replaceWith(editBtn);
+
+  showExpenses();
+  sumExpenses();
+  balance();
+};
+
 const createItemEx = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
@@ -169,6 +234,7 @@ const createItemEx = (item) => {
   amount.className = "amount";
   const editButton = document.createElement("button");
   editButton.innerText = "Edytuj";
+  editButton.className = "edit";
   const removeButton = document.createElement("button");
   removeButton.innerText = "Usuń";
 
@@ -179,7 +245,7 @@ const createItemEx = (item) => {
   listItem.appendChild(removeButton);
 
   removeButton.addEventListener("click", () => removeItemEx(item.id));
-  editButton.addEventListener("click", () => editItem(item));
+  editButton.addEventListener("click", () => editItemEx(item));
 };
 
 const showExpenses = () => {
