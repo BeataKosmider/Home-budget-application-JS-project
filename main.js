@@ -1,18 +1,18 @@
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
-const incomeForm = document.getElementById("incomeForm");
-const incomeTitle = document.getElementById("incomeTitle");
-const incomeValue = document.getElementById("incomeValue");
-const incomesList = document.getElementById("incomesList");
+const incomeForm = document.getElementById("income-form");
+const incomeTitle = document.getElementById("income-title");
+const incomeValue = document.getElementById("income-value");
+const incomesList = document.getElementById("incomes-list");
 const incomesValue = document.getElementById("incomesValue");
 
-const expenseForm = document.getElementById("expenseForm");
-const expenseTitle = document.getElementById("expenseTitle");
-const expenseValue = document.getElementById("expenseValue");
-const expensesList = document.getElementById("expensesList");
-const expensesValue = document.getElementById("expensesValue");
+const expenseForm = document.getElementById("expense-form");
+const expenseTitle = document.getElementById("expense-title");
+const expenseValue = document.getElementById("expense-value");
+const expensesList = document.getElementById("expenses-list");
+const expensesValue = document.getElementById("expenses-value");
 
-const budgetState = document.getElementById("budgetState");
+const budgetState = document.getElementById("budget-state");
 
 let incomesArr = [];
 let expensesArr = [];
@@ -58,7 +58,7 @@ const editItemIn = (item) => {
   editAmount.value = item.amount;
   const saveButton = document.createElement("button");
   saveButton.innerText = "Zapisz";
-  saveButton.className = "save";
+  saveButton.className = "save button";
 
   title.replaceWith(editTitle);
   amount.replaceWith(editAmount);
@@ -99,7 +99,7 @@ const saveItemIn = (item) => {
 const createItemIn = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
-  listItem.className = "flex flex--space-between budget__list__item";
+  listItem.className = "flex budget-list-item";
   const itemTitle = document.createElement("p");
   itemTitle.className = "title";
   itemTitle.innerText = item.title;
@@ -108,9 +108,10 @@ const createItemIn = (item) => {
   amount.className = "amount";
   const editButton = document.createElement("button");
   editButton.innerText = "Edytuj";
-  editButton.className = "edit";
+  editButton.className = "edit button";
   const removeButton = document.createElement("button");
   removeButton.innerText = "Usuń";
+  removeButton.className = "remove button";
 
   incomesList.appendChild(listItem);
   listItem.appendChild(itemTitle);
@@ -127,20 +128,13 @@ const showIncomes = () => {
   incomesArr.forEach((item) => {
     createItemIn(item);
   });
-  console.log(incomesArr);
 };
 
 const sumIncomes = () => {
   totalIncomes = incomesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
-  document.getElementById("incomesValue").innerText = totalIncomes;
-};
-const sumExpenses = () => {
-  totalExpenses = expensesArr.reduce((acc, newValue) => {
-    return acc + newValue.amount;
-  }, 0);
-  document.getElementById("expensesValue").innerText = totalExpenses;
+  incomesValue.innerText = totalIncomes.toFixed(2);
 };
 
 const addExpenseItem = () => {
@@ -184,7 +178,7 @@ const editItemEx = (item) => {
   editAmount.value = item.amount;
   const saveButton = document.createElement("button");
   saveButton.innerText = "Zapisz";
-  saveButton.className = "save";
+  saveButton.className = "save button";
 
   title.replaceWith(editTitle);
   amount.replaceWith(editAmount);
@@ -225,7 +219,7 @@ const saveItemEx = (item) => {
 const createItemEx = (item) => {
   const listItem = document.createElement("li");
   listItem.id = item.id;
-  listItem.className = "flex flex--space-between budget__list__item";
+  listItem.className = "flex budget-list-item";
   const itemTitle = document.createElement("p");
   itemTitle.className = "title";
   itemTitle.innerText = item.title;
@@ -234,9 +228,10 @@ const createItemEx = (item) => {
   amount.className = "amount";
   const editButton = document.createElement("button");
   editButton.innerText = "Edytuj";
-  editButton.className = "edit";
+  editButton.className = "edit button";
   const removeButton = document.createElement("button");
   removeButton.innerText = "Usuń";
+  removeButton.className = "remove button";
 
   expensesList.appendChild(listItem);
   listItem.appendChild(itemTitle);
@@ -253,7 +248,13 @@ const showExpenses = () => {
   expensesArr.forEach((item) => {
     createItemEx(item);
   });
-  console.log(expensesArr);
+};
+
+const sumExpenses = () => {
+  totalExpenses = expensesArr.reduce((acc, newValue) => {
+    return acc + newValue.amount;
+  }, 0);
+  expensesValue.innerText = totalExpenses.toFixed(2);
 };
 
 let totalIncomes = 0;
@@ -262,14 +263,18 @@ let sumBalance = 0;
 
 const balance = () => {
   sumBalance = totalIncomes - totalExpenses;
-  console.log(sumBalance);
-  console.log(totalIncomes);
-  console.log(totalExpenses);
   if (sumBalance > 0) {
-    budgetState.innerHTML = `Możesz jeszcze wydać ${sumBalance} złotych.`;
+    budgetState.innerHTML = `Możesz jeszcze wydać ${sumBalance.toFixed(
+      2
+    )} złotych.`;
+    budgetState.className = "text-center budget-state inplus";
   } else if (sumBalance < 0) {
-    budgetState.innerHTML = `Bilans jest ujemny. Jesteś na minusie ${sumBalance} złotych.`;
+    budgetState.innerHTML = `Bilans jest ujemny. Jesteś na minusie ${sumBalance.toFixed(
+      2
+    )} złotych.`;
+    budgetState.className = "text-center budget-state inminus";
   } else {
     budgetState.innerHTML = "Bilans wynosi zero.";
+    budgetState.className = "text-center budget-state zero";
   }
 };
