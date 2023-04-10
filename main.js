@@ -4,7 +4,7 @@ const incomeForm = document.getElementById("income-form");
 const incomeTitle = document.getElementById("income-title");
 const incomeValue = document.getElementById("income-value");
 const incomesList = document.getElementById("incomes-list");
-const incomesValue = document.getElementById("incomesValue");
+const incomesValue = document.getElementById("incomes-value");
 
 const expenseForm = document.getElementById("expense-form");
 const expenseTitle = document.getElementById("expense-title");
@@ -33,7 +33,11 @@ const addIncomeItem = () => {
 };
 incomeForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  addIncomeItem();
+  if (incomeTitle.value.trim()) {
+    addIncomeItem();
+  } else {
+    alert("Podaj właściwą nazwę");
+  }
 });
 
 const removeItemIn = (id) => {
@@ -50,21 +54,36 @@ const editItemIn = (item) => {
   const editBtn = li.querySelector(".edit");
   const editTitle = document.createElement("input");
   editTitle.setAttribute("type", "text");
+  editTitle.required = true;
   editTitle.className = "edit-title";
   editTitle.value = item.title;
   const editAmount = document.createElement("input");
   editAmount.setAttribute("type", "number");
+  editAmount.setAttribute("step", "0.01");
+  editAmount.setAttribute("min", "0.01");
+  editAmount.required = true;
   editAmount.className = "edit-amount";
   editAmount.value = item.amount;
   const saveButton = document.createElement("button");
   saveButton.innerText = "Zapisz";
+  saveButton.type = "submit";
   saveButton.className = "save button";
 
   title.replaceWith(editTitle);
   amount.replaceWith(editAmount);
   editBtn.replaceWith(saveButton);
 
-  saveButton.addEventListener("click", () => saveItemIn(item));
+  saveButton.addEventListener("click", () => {
+    if (
+      editTitle.value.trim() &&
+      editAmount.value &&
+      Number(editAmount.value) > 0.01
+    ) {
+      saveItemIn(item);
+    } else {
+      alert("Wprowadź poprawne dane");
+    }
+  });
 };
 
 const saveItemIn = (item) => {
@@ -81,7 +100,7 @@ const saveItemIn = (item) => {
       return {
         id: item.id,
         title: editedTitle.value,
-        amount: Number(editedAmount.value),
+        amount: Number(Number(editedAmount.value).toFixed(2)),
       };
     } else {
       return income;
@@ -134,7 +153,7 @@ const sumIncomes = () => {
   totalIncomes = incomesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
-  incomesValue.innerText = totalIncomes.toFixed(2);
+  incomesValue.innerText = Number(totalIncomes.toFixed(2));
 };
 
 const addExpenseItem = () => {
@@ -153,7 +172,11 @@ const addExpenseItem = () => {
 };
 expenseForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  addExpenseItem();
+  if (expenseTitle.value.trim()) {
+    addExpenseItem();
+  } else {
+    alert("Podaj właściwą nazwę");
+  }
 });
 
 const removeItemEx = (id) => {
@@ -170,21 +193,36 @@ const editItemEx = (item) => {
   const editBtn = li.querySelector(".edit");
   const editTitle = document.createElement("input");
   editTitle.setAttribute("type", "text");
+  editTitle.required = true;
   editTitle.className = "edit-title";
   editTitle.value = item.title;
   const editAmount = document.createElement("input");
   editAmount.setAttribute("type", "number");
+  editAmount.setAttribute("step", "0.01");
+  editAmount.setAttribute("min", "0.01");
+  editAmount.required = true;
   editAmount.className = "edit-amount";
   editAmount.value = item.amount;
   const saveButton = document.createElement("button");
   saveButton.innerText = "Zapisz";
+  saveButton.type = "submit";
   saveButton.className = "save button";
 
   title.replaceWith(editTitle);
   amount.replaceWith(editAmount);
   editBtn.replaceWith(saveButton);
 
-  saveButton.addEventListener("click", () => saveItemEx(item));
+  saveButton.addEventListener("click", () => {
+    if (
+      editTitle.value.trim() &&
+      editAmount.value &&
+      Number(editAmount.value) > 0.01
+    ) {
+      saveItemEx(item);
+    } else {
+      alert("Wprowadź poprawne dane");
+    }
+  });
 };
 
 const saveItemEx = (item) => {
@@ -201,7 +239,7 @@ const saveItemEx = (item) => {
       return {
         id: item.id,
         title: editedTitle.value,
-        amount: Number(editedAmount.value),
+        amount: Number(Number(editedAmount.value).toFixed(2)),
       };
     } else {
       return expense;
@@ -254,7 +292,7 @@ const sumExpenses = () => {
   totalExpenses = expensesArr.reduce((acc, newValue) => {
     return acc + newValue.amount;
   }, 0);
-  expensesValue.innerText = totalExpenses.toFixed(2);
+  expensesValue.innerText = Number(totalExpenses.toFixed(2));
 };
 
 let totalIncomes = 0;
